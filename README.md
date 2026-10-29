@@ -1,3 +1,17 @@
+# Solar distilling dryer · SD-01
+
+A dimensioned, interactive fabrication blueprint for a passive solar tomato dryer and closed vapour-path water collector. Open the root `index.html` through a static HTTP server (for example `python3 -m http.server 8080`). Inspect parts, orbit/pan/zoom, switch orthographic views, open the chamber, explode the assembly and download the five fabrication files. All browser assets are local.
+
+See the [fabrication definition](docs/fabrication.md) for dimensions, tolerances, sheet and tube cut lists, sanitary joints, assembly, cleaning and physical commissioning. The browser and CAD share one native JavaScript solid definition. The prototype does not claim validated drying performance or potable condensate.
+
+The Pages artifact puts this blueprint at the repository root and preserves the universal example at `/demo/`. PRs validate without deploying; an authorized main-branch deployment requires **Settings → Pages → Source = GitHub Actions**. See [hosting and validation](docs/fabrication.md#running-and-publishing-the-website).
+
+![Dimensioned solar dryer assembly](docs/screenshots/after-desktop.png)
+
+The development pipeline and universal example inherited from the template remain documented below.
+
+---
+
 # js-ai-driven-development-pipeline-template
 
 A comprehensive template for AI-driven JavaScript/TypeScript development with full CI/CD pipeline support.
@@ -214,8 +228,8 @@ This design decouples PR validation from the need to pull changes from the defau
 
 ### Deploying the example app
 
-The `example-app.yml` workflow deploys the universal example app to GitHub
-Pages on every push to `main`. Before the first run on `main` in a new
+The `example-app.yml` workflow deploys the solar blueprint at the site root and
+the universal example app at `/demo/` on every push to `main`. Before the first run on `main` in a new
 repository created from this template, open **Settings → Pages** and set
 **Source = GitHub Actions**. This is a one-time manual step and cannot be
 configured from a workflow because the Pages source defaults to

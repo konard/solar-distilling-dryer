@@ -95,7 +95,7 @@ export default [
     },
   },
   {
-    files: ['examples/universal-app/src/**/*.js'],
+    files: ['examples/universal-app/src/**/*.js', 'assets/**/*.js'],
     languageOptions: {
       globals: {
         document: 'readonly',
@@ -129,7 +129,7 @@ export default [
       'dist/**',
       '**/dist/**',
       '**/out/**',
-      '*.min.js',
+      '**/*.min.js',
       '.eslintcache',
       // The jscpd HTML reporter writes a bundled prism.js here
       'reports/**',
