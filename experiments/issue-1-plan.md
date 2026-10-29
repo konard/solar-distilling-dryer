@@ -11,8 +11,8 @@ Objective: implement and verify every requirement of issue #1 and its comments i
 7. [x] Document all design assumptions, fabrication interfaces and verification requirements; avoid claims of verified food/water safety or guaranteed yield. Keep acceptance assertions intact.
 8. [x] Add meaningful native tests for specification invariants, drain and clearances, part/cut lists and exports, plus reproducible browser verification of interactions and mobile layout.
 9. [x] Add changeset; run all local tests and required lint/format/duplication/syntax/line limits/changeset/docs checks within the 2.92 GiB memory limit. Preserve verbose logs in ci-logs. Run heavy checks sequentially.
-10. [ ] Fetch/merge latest default branch, review the whole diff, commit atomic steps and validate exact candidate revision. Only this coordinator pushes, once per batch, only to issue-1-5e79aea78387.
-11. [ ] Update PR title/body with requirement/evidence inventory, reproduction, assumptions and committed before/after screenshots. Preserve `Fixes #1`.
+10. [x] Fetch/merge latest default branch, review the whole diff, commit atomic steps and validate exact candidate revision. Only this coordinator pushes, once per batch, only to issue-1-5e79aea78387.
+11. [x] Update PR title/body with requirement/evidence inventory, reproduction, assumptions and committed before/after screenshots. Preserve `Fixes #1`.
 12. [ ] List CI runs with timestamps and head SHAs; preserve every failed same-revision workflow log, inspect errors with line numbers and batch all fixes before another push. Wait for all required same-revision CI.
 13. [ ] Review gh pr diff, confirm no requested behavior removed, clean working tree, default branch included, all checks passing; mark PR #2 ready. Never merge/release/deploy as part of this task.
 
@@ -20,6 +20,8 @@ Evidence collected locally: baseline and final desktop/mobile screenshots; twelv
 
 Repository Pages API returned HTTP 404 on 2026-10-29. Public launch remains an external prerequisite: enable GitHub Actions as Pages source and authorize the separate merge/deployment. Keep this criterion unfinished until deployment evidence exists. Physical manufacturing/process commissioning is documented rather than claimed as performed.
 
-Local full-suite results: Node 925/925, Bun 925/925, Deno 924 passed and one existing runtime-specific ignored test. Lint/format/duplication, syntax, file limits, docs, workflow policy, actionlint and focused architecture gates pass. The Git comparison guards run after the commit so they inspect the candidate rather than unrelated existing changeset fragments.
+Local full-suite results before the last pin regression: Node 925/925, Bun 925/925, Deno 924 passed and one existing runtime-specific ignored test. Final exact candidate Node suite: 926/926. All nine CI runtime/platform combinations passed for c6bdc46. Lint/format/duplication, syntax, file limits, docs, workflow policy, actionlint and focused architecture gates pass. The Git comparison guards run after the commit so they inspect the candidate rather than unrelated existing changeset fragments.
 
 Final refinement: retained optional automatic orbit and added a reproducing regression for eight 8 mm pins fitting the specified Ø8.5 drillings. Focused native tests pass in Node, Bun and Deno; the preceding full-suite counts predate this additional regression.
+
+CI batch 1: all five runs started 2026-10-29 17:57:09 UTC at c6bdc46. Four workflows passed; links run 40926184834 failed on FDA bot redirection (log line 311) and USDA certificate validation (line 310). Preserved ci-logs/links-40926184834.log; reviewed both errors and all other workflow conclusions before batch 2. Replaced both references with the exact archived agency snapshots verified by that run. Link-check acceptance is unchanged.
