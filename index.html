@@ -1,232 +1,367 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Closed-Loop Solar Distiller and Food Dryer</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    <style>
-        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background: #121212; color: #e0e0e0; overflow-x: hidden; }
-        #header { padding: 20px; background: #1a1a1a; text-align: center; border-bottom: 2px solid #333; }
-        h1 { margin: 0; color: #ff9800; font-size: 24px; }
-        #container { display: flex; flex-direction: row; height: calc(100vh - 70px); }
-        #canvas3d { flex: 1; background: #000; position: relative; }
-        #sidebar { width: 450px; background: #1e1e1e; padding: 20px; overflow-y: auto; border-left: 2px solid #333; box-sizing: border-box; }
-        h2 { color: #ff9800; border-bottom: 1px solid #444; padding-bottom: 5px; font-size: 18px; margin-top: 20px; }
-        ul { padding-left: 20px; }
-        li { margin-bottom: 8px; font-size: 14px; line-height: 1.4; }
-        .spec-label { font-weight: bold; color: #4caf50; }
-        #controls-hint { position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.7); padding: 8px 12px; border-radius: 4px; font-size: 12px; color: #bbb; pointer-events: none; }
-        @media (max-width: 900px) {
-            #container { flex-direction: column; }
-            #sidebar { width: 100%; height: auto; border-left: none; border-top: 2px solid #333; }
-        }
-    </style>
-</head>
-<body>
-
-<div id="header">
-    <h1>Closed-Loop Solar Distiller & Tomato Dryer Blueprint</h1>
-</div>
-
-<div id="container">
-    <div id="canvas3d">
-        <div id="controls-hint">🖱️ Left Click + Drag to Rotate | 📜 Scroll to Zoom | 🖱️ Right Click + Drag to Pan</div>
-    </div>
-    
-    <div id="sidebar">
-        <h2>🛠️ Core Architectural Blueprint</h2>
-        <ul>
-            <li><span class="spec-label">Sanitary Architecture:</span> The main 316 Stainless Steel chamber has absolutely zero internal or external welded leg-mount brackets, threads, or crevices. This completely eliminates hidden food-residue traps, making cleaning entirely seamless.</li>
-            <li><span class="spec-label">Inner Product Stand:</span> The inner structural stand is formed by exactly 2 solid perpendicular support planes. The remaining two sides are completely open, allowing water to cascade unhindered down the short, large-bore vertical drop drain directly into the glass bottle below. This smooth, open design avoids sharp inside corners or stagnant fluid pools.</li>
-            <li><span class="spec-label">External Exoskeleton Legs:</span> Detachable support legs form a self-locking structural cage beneath the main chamber. They wrap tightly around the exterior shell and lock together securely without piercing or welding onto the main chamber walls. They support any required vessel height to accommodate various bottle sizes in the cool shade underneath.</li>
-            <li><span class="spec-label">Rain & Dust Overlap Lid:</span> The heavy top glass plate is oversized to wrap securely around the steel chassis flange. It acts as an architectural awning that effortlessly deflects rain and atmospheric dust away from the system seals, ensuring zero cross-contamination.</li>
-        </ul>
-
-        <h2>📐 Material Specifications</h2>
-        <ul>
-            <li><span class="spec-label">Chassis & Piping:</span> Food-Grade 316 Stainless Steel (Excellent tolerance to high-temperature moisture and localized chloride salt pitting).</li>
-            <li><span class="spec-label">Condenser Lid:</span> Tempered Low-Iron Solar Glass (High optical clarity, excellent thermal retention, and scratch-proof durability).</li>
-            <li><span class="spec-label">Collection Flask:</span> High-Borosilicate Glass Bottle (Zero microplastic leaching, immune to aggressive mineral-free distilled water).</li>
-            <li><span class="spec-label">Exoskeleton Assembly:</span> Structural Marine-Grade Aluminum or Coated Steel.</li>
-        </ul>
-        
-        <h2>🧼 Operational Cleaning Protocol</h2>
-        <ul>
-            <li>Disconnect the 5-liter collection bottle at the sealed cap interface.</li>
-            <li>Pour boiling water directly into the large-diameter perpendicular sink hole.</li>
-            <li>Pass a straight-line structural nylon brush cleanly from top to bottom.</li>
-            <li>Rinse the open 2-plane internal product stand without disassembling any elements.</li>
-        </ul>
-    </div>
-</div>
-
-<script>
-    // --- 3D Scene Initialization ---
-    const container = document.getElementById('canvas3d');
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x16161a);
-
-    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.set(4, 5, 6);
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.shadowMap.enabled = true;
-    container.appendChild(renderer.domElement);
-
-    const controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.maxPolarAngle = Math.PI / 2 + 0.1; // Prevent going completely underground
-
-    // --- Lighting Design ---
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-    scene.add(ambientLight);
-
-    const dirLight = new THREE.DirectionalLight(0xfff5e6, 0.8); // Warm sunlight tone
-    dirLight.position.set(5, 10, 7);
-    dirLight.castShadow = true;
-    scene.add(dirLight);
-
-    const fillLight = new THREE.DirectionalLight(0x88bbff, 0.3); // Cool ambient sky fill
-    fillLight.position.set(-5, 3, -5);
-    scene.add(fillLight);
-
-    // --- Materials Definitions ---
-    const steelMaterial = new THREE.MeshStandardMaterial({
-        color: 0x999999,
-        metalness: 0.9,
-        roughness: 0.15,
-        name: '316 Stainless Steel'
-    });
-
-    const polishedInnerMaterial = new THREE.MeshStandardMaterial({
-        color: 0xcccccc,
-        metalness: 0.95,
-        roughness: 0.08,
-        name: 'Polished Inner Steel'
-    });
-
-    const glassMaterial = new THREE.MeshStandardMaterial({
-        color: 0xffffff,
-        transparent: true,
-        opacity: 0.4,
-        roughness: 0.05,
-        metalness: 0.1,
-        side: THREE.DoubleSide,
-        name: 'Condenser Glass'
-    });
-
-    const bottleMaterial = new THREE.MeshStandardMaterial({
-        color: 0x88ccff,
-        transparent: true,
-        opacity: 0.5,
-        roughness: 0.1,
-        metalness: 0.1,
-        name: 'Borosilicate Glass Bottle'
-    });
-
-    const legMaterial = new THREE.MeshStandardMaterial({
-        color: 0x333333,
-        metalness: 0.6,
-        roughness: 0.4,
-        name: 'Exoskeleton Legs'
-    });
-
-    // --- Object Assembly Construction ---
-    const systemGroup = new THREE.Group();
-
-    // 1. Outer Main Chamber (Big Box) - 2m wide x 1.2m deep x 0.4m high
-    const mainBoxGeom = new THREE.BoxGeometry(2.0, 0.4, 1.2);
-    // Create hollow appearance via a slight scaling inside or simple box representations
-    const mainBoxMesh = new THREE.Mesh(mainBoxGeom, steelMaterial);
-    mainBoxMesh.position.y = 1.2; // Raised off the floor
-    systemGroup.add(mainBoxMesh);
-
-    // 2. Overlapping Glass Top (Rain-Deflecting Canopy)
-    const glassGeom = new THREE.BoxGeometry(2.1, 0.05, 1.3);
-    const glassMesh = new THREE.Mesh(glassGeom, glassMaterial);
-    glassMesh.position.set(0, 1.42, 0); // Positioned directly over the steel top flanging
-    systemGroup.add(glassMesh);
-
-    // 3. Smaller Internal Product Stand (2 Solid Planes Architecture)
-    const innerStandGroup = new THREE.Group();
-    const planeGeo1 = new THREE.BoxGeometry(1.6, 0.02, 0.8); // Horizontal base shelf
-    const planeMesh1 = new THREE.Mesh(planeGeo1, polishedInnerMaterial);
-    planeMesh1.position.set(0, 1.15, 0);
-    innerStandGroup.add(planeMesh1);
-
-    const verticalPlaneGeo = new THREE.BoxGeometry(0.02, 0.15, 0.8); // One vertical plane support side
-    const vertPlane = new THREE.Mesh(verticalPlaneGeo, polishedInnerMaterial);
-    vertPlane.position.set(-0.8, 1.225, 0);
-    innerStandGroup.add(vertPlane);
-    
-    const vertPlane2 = new THREE.Mesh(verticalPlaneGeo, polishedInnerMaterial);
-    vertPlane2.position.set(0.8, 1.225, 0);
-    innerStandGroup.add(vertPlane2); // Leaving the front and back planes completely open
-    systemGroup.add(innerStandGroup);
-
-    // 4. Short Perpendicular Large-Diameter Drop Pipe
-    const pipeGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.25, 32);
-    const pipeMesh = new THREE.Mesh(pipeGeo, steelMaterial);
-    pipeMesh.position.set(0, 0.95, 0); // Drops out center bottom cleanly
-    systemGroup.add(pipeMesh);
-
-    // 5. Glass Bottle (Positioned directly under the vertical drop)
-    const bottleBodyGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.5, 32);
-    const bottleBody = new THREE.Mesh(bottleBodyGeo, bottleMaterial);
-    bottleBody.position.set(0, 0.45, 0);
-    systemGroup.add(bottleBody);
-
-    const bottleNeckGeo = new THREE.CylinderGeometry(0.09, 0.09, 0.15, 32);
-    const bottleNeck = new THREE.Mesh(bottleNeckGeo, bottleMaterial);
-    bottleNeck.position.set(0, 0.725, 0);
-    systemGroup.add(bottleNeck);
-
-    // 6. External Self-Locking Cage & Detachable Legs (No connection to Main Chamber)
-    const cageBaseGeo = new THREE.BoxGeometry(2.05, 0.04, 1.25);
-    const cageBase = new THREE.Mesh(cageBaseGeo, legMaterial);
-    cageBase.position.set(0, 0.98, 0); // Wraps snugly under the box chassis boundary
-    systemGroup.add(cageBase);
-
-    // 4 Corner Legs supporting full height clearance
-    const legGeo = new THREE.CylinderGeometry(0.03, 0.03, 1.0, 16);
-    const legPositions = [
-        [-1.0, 0.5, -0.58],
-        [1.0, 0.5, -0.58],
-        [-1.0, 0.5, 0.58],
-        [1.0, 0.5, 0.58]
-    ];
-    
-    legPositions.forEach(pos => {
-        const leg = new THREE.Mesh(legGeo, legMaterial);
-        leg.position.set(pos[0], pos[1], pos[2]);
-        systemGroup.add(leg);
-    });
-
-    scene.add(systemGroup);
-
-    // Ground plane reference grid
-    const gridHelper = new THREE.GridHelper(10, 20, 0x444444, 0x222222);
-    gridHelper.position.y = 0;
-    scene.add(gridHelper);
-
-    // --- Animation & Resize Cycle ---
-    function animate() {
-        requestAnimationFrame(animate);
-        systemGroup.rotation.y += 0.002; // Slow elegant rotation showcase
-        controls.update();
-        renderer.render(scene, camera);
-    }
-
-    window.addEventListener('resize', () => {
-        camera.aspect = container.clientWidth / container.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(container.clientWidth, container.clientHeight);
-    });
-
-    animate();
-</script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#edf1ee" />
+    <meta
+      name="description"
+      content="Explore a dimensioned solar tomato dryer and water distiller. Inspect the sanitary assembly, bill of materials and downloadable fabrication drawings."
+    />
+    <title>SD-01 · Solar Distilling Dryer</title>
+    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#specification">Skip to specifications</a>
+    <header class="masthead">
+      <a href="./" class="brand" aria-label="Solar distilling dryer home"
+        ><span class="brand-icon" aria-hidden="true">S<span>↗</span></span
+        ><span>SOLAR WORKS<small>OPEN ENGINEERING / SD–01</small></span></a
+      >
+      <nav aria-label="Project">
+        <a href="./docs/fabrication.md"
+          >Fabrication guide <span aria-hidden="true">↗</span></a
+        ><a
+          href="https://github.com/konard/solar-distilling-dryer"
+          class="source-link"
+          >View source <span aria-hidden="true">↗</span></a
+        >
+      </nav>
+    </header>
+    <main>
+      <section class="intro" aria-labelledby="title">
+        <div>
+          <div class="eyebrow">
+            <span class="status-dot"></span> PASSIVE SOLAR SYSTEM
+            <span class="slash">/</span> REVISION A
+          </div>
+          <h1 id="title">Sun in. <span>Nothing wasted.</span></h1>
+          <p>
+            A closed-loop tomato dryer & water distiller.<br
+              class="mobile-break"
+            />
+            Designed to come apart. Built to stay clean.
+          </p>
+        </div>
+        <div class="project-stamp">
+          <span>SD—01</span
+          ><small
+            >FABRICATION BLUEPRINT<br />ALL DIMENSIONS IN MILLIMETRES</small
+          >
+        </div>
+      </section>
+      <div class="workspace">
+        <section class="model-panel" aria-label="Interactive assembly viewer">
+          <div class="viewer-heading">
+            <div>
+              <span class="status-dot"></span
+              ><strong id="view-title">Assembly overview</strong
+              ><span class="viewer-subtitle"> / 12 COMPONENT GROUPS</span>
+            </div>
+            <span class="scale-tag">mm</span>
+          </div>
+          <div id="viewport">
+            <div id="viewer-error" role="status" hidden>
+              3D is unavailable. The complete specifications and downloadable
+              drawings remain available below.
+            </div>
+            <div class="orientation" aria-hidden="true">
+              <span>↑ Z</span><span>Y ↙ &nbsp; ↘ X</span>
+            </div>
+            <div class="model-caption">
+              <span>SD–01 / A</span><small>1200 × 800 CHAMBER</small>
+            </div>
+          </div>
+          <div class="view-controls" role="group" aria-label="Camera view">
+            <button type="button" data-view="iso" aria-pressed="true">
+              Isometric</button
+            ><button type="button" data-view="front" aria-pressed="false">
+              Front</button
+            ><button type="button" data-view="right" aria-pressed="false">
+              Right</button
+            ><button type="button" data-view="top" aria-pressed="false">
+              Top</button
+            ><button
+              type="button"
+              id="reset"
+              class="reset-button"
+              aria-label="Reset assembly and camera"
+            >
+              ↺ <span>Reset</span>
+            </button>
+          </div>
+          <div class="model-options">
+            <label
+              ><input id="section" type="checkbox" /><span
+                >Open section</span
+              ></label
+            ><label
+              ><input id="explode" type="checkbox" /><span
+                >Exploded</span
+              ></label
+            ><label
+              ><input id="dimensions" type="checkbox" checked /><span
+                >Dimensions</span
+              ></label
+            ><label
+              ><input id="produce" type="checkbox" checked /><span
+                >Product</span
+              ></label
+            ><label
+              ><input id="rotate" type="checkbox" /><span
+                >Auto orbit</span
+              ></label
+            >
+          </div>
+          <div class="viewer-footer">
+            <span
+              ><span aria-hidden="true">⤧</span> Drag to orbit <b>·</b> Scroll
+              to zoom <b>·</b> Right-drag to pan</span
+            ><span>SELECT A PART TO INSPECT</span>
+          </div>
+        </section>
+        <aside
+          id="specification"
+          class="spec-panel"
+          aria-label="Assembly specifications"
+          tabindex="-1"
+        >
+          <div class="panel-header">
+            <span class="eyebrow">THE ASSEMBLY</span>
+            <h2>Every part, defined.</h2>
+            <p>Inspect the build. Take it to the workshop.</p>
+          </div>
+          <div class="tabs" role="tablist" aria-label="Specification sections">
+            <button
+              role="tab"
+              id="tab-parts"
+              aria-controls="panel-parts"
+              aria-selected="true"
+              tabindex="0"
+              data-tab="parts"
+            >
+              Parts <span>12</span></button
+            ><button
+              role="tab"
+              id="tab-build"
+              aria-controls="panel-build"
+              aria-selected="false"
+              tabindex="-1"
+              data-tab="build"
+            >
+              Build</button
+            ><button
+              role="tab"
+              id="tab-care"
+              aria-controls="panel-care"
+              aria-selected="false"
+              tabindex="-1"
+              data-tab="care"
+            >
+              Care
+            </button>
+          </div>
+          <section role="tabpanel" id="panel-parts" aria-labelledby="tab-parts">
+            <div class="parts-list" id="parts-list"></div>
+            <div class="part-detail" id="part-detail" aria-live="polite"></div>
+          </section>
+          <section
+            role="tabpanel"
+            id="panel-build"
+            aria-labelledby="tab-build"
+            hidden
+          >
+            <div class="prose">
+              <h3>A clean shell. An independent frame.</h3>
+              <p>
+                The 2 mm 316L chamber has no leg mounts, screw housings or
+                bracket welds. A separate cage supports its perimeter on
+                removable silicone strips.
+              </p>
+              <ol>
+                <li>
+                  <strong>Fabricate the collector.</strong> Cut four walls and
+                  four developed floor panels from the DXF. Fixture to 1200 ×
+                  800; flush TIG weld, blend R3 internal seams, finish Ra ≤ 0.8
+                  µm, pickle and passivate.
+                </li>
+                <li>
+                  <strong>Fit the drain.</strong> Weld the Ø53.8 × 1.5 tube on
+                  centre, flush with the floor. The 130 mm straight drop has no
+                  elbows or internal ledges.
+                </li>
+                <li>
+                  <strong>Build the cage.</strong> Weld the 30 × 30 × 2 tube cut
+                  list. Fit four cage-only adjustable legs, silicone strips and
+                  removable lid restraints. Never drill the chamber.
+                </li>
+                <li>
+                  <strong>Install the product stand.</strong> Two solid
+                  perpendicular support sheets form a removable L. Saddle feet
+                  maintain a drainage gap; the front and right sides stay open.
+                </li>
+                <li>
+                  <strong>Seal the canopy.</strong> Place the continuous
+                  U-gasket on the inclined rim. Fit the 6 mm glass and cage
+                  pressure bars. The canopy extends 50 mm beyond every chamber
+                  edge.
+                </li>
+                <li>
+                  <strong>Connect collection.</strong> Fit the wide-mouth
+                  vessel, straight sleeve, cap face seal and dry filtered vent.
+                  Adjust the shelf with the cage so all drain datums remain
+                  aligned.
+                </li>
+              </ol>
+              <h3>Workshop datums</h3>
+              <dl class="datum-list">
+                <dt>Collector centre</dt>
+                <dd>Z860</dd>
+                <dt>Collector perimeter</dt>
+                <dd>Z885</dd>
+                <dt>Front / rear rim</dt>
+                <dd>Z1085 / Z1305</dd>
+                <dt>Tray surface</dt>
+                <dd>Z976.5</dd>
+                <dt>Drain outlet / connector</dt>
+                <dd>Z730 / Z722</dd>
+                <dt>Linear / weld / angle</dt>
+                <dd>±1 / ±2 / ±0.5°</dd>
+              </dl>
+              <p class="note">
+                Prototype dimensions for fabrication review. Verify glass
+                strength, cage stability and sealing with the acceptance
+                procedure before food use. No electrical heater, pump or fan is
+                specified.
+              </p>
+              <a href="./docs/fabrication.md"
+                >Read full fabrication & acceptance procedure ↗</a
+              >
+            </div>
+          </section>
+          <section
+            role="tabpanel"
+            id="panel-care"
+            aria-labelledby="tab-care"
+            hidden
+          >
+            <div class="prose">
+              <h3>Open. Brush. Rinse. Inspect.</h3>
+              <p>
+                Clean after every batch. Let the assembly cool, then move it to
+                a stable cleaning surface.
+              </p>
+              <ol>
+                <li>
+                  Remove the vessel; cap its ports. Release the cage pressure
+                  bars and lift the glass with two people. Lift off the rim
+                  gasket.
+                </li>
+                <li>
+                  Lift out the tray, L-stand and all four silicone feet. Both
+                  stand sides are directly accessible. Remove the drain sleeve,
+                  cap and vent cartridge.
+                </li>
+                <li>
+                  Wash with a food-equipment detergent at its labelled dilution
+                  and temperature. Brush the Ø50.8 bore straight through with a
+                  45–50 mm nylon brush.
+                </li>
+                <li>
+                  Rinse with potable water, then use a compatible food-contact
+                  sanitizer following its contact time and rinse instructions.
+                  Avoid chloride cleaners and thermal shock to glass.
+                </li>
+                <li>
+                  Inspect under light: no residue in seams, free drainage,
+                  intact silicone, dry undamaged vent. Air dry all parts, then
+                  reassemble the closed path.
+                </li>
+              </ol>
+              <h3>A passive, closed vapour path</h3>
+              <p>
+                Sunlight heats the sliced product. Vapour condenses on the
+                cooler canopy and chamber surfaces; gravity carries condensate
+                to the four-plane collector and straight drop. The sealed bottle
+                sits behind a three-sided sun shield. A hydrophobic vent
+                balances pressure.
+              </p>
+              <p class="note">
+                The enclosure reduces exposure to insects, rain and dust; it
+                cannot guarantee sterility. Prototype condensate is not
+                certified drinking water. Confirm drying time, product water
+                activity and water quality through appropriate testing; do not
+                assume sunlight alone sanitizes food.
+              </p>
+            </div>
+          </section>
+          <div class="download-area">
+            <button
+              type="button"
+              id="download-toggle"
+              aria-expanded="false"
+              aria-controls="downloads"
+            >
+              <span aria-hidden="true">↓</span> Download fabrication pack
+              <span class="download-meta">5 FILES</span>
+            </button>
+            <div id="downloads" hidden>
+              <p>Revision A · generated locally · mm</p>
+              <button type="button" data-export="svg">
+                Dimensioned drawing <span>SVG ↗</span></button
+              ><button type="button" data-export="dxf">
+                Developed sheet profiles <span>DXF ↗</span></button
+              ><button type="button" data-export="scad">
+                Parametric assembly <span>SCAD ↗</span></button
+              ><button type="button" data-export="csv">
+                Bill of materials <span>CSV ↗</span></button
+              ><button type="button" data-export="json">
+                Complete specification <span>JSON ↗</span></button
+              ><a href="./docs/fabrication.md"
+                >Fabrication guide & QA checklist ↗</a
+              >
+            </div>
+            <span id="download-status" role="status"></span>
+          </div>
+        </aside>
+      </div>
+      <section class="principles" aria-label="Design principles">
+        <div>
+          <span>01 / MATERIAL</span><strong>316L stainless steel</strong>
+          <p>Flush seams. Smooth, accessible surfaces.</p>
+        </div>
+        <div>
+          <span>02 / ENERGY</span><strong>Powered by sunlight</strong>
+          <p>Gravity drainage. No grid connection.</p>
+        </div>
+        <div>
+          <span>03 / MAINTENANCE</span><strong>Built to come apart</strong>
+          <p>Lift-out tray, stand, seals and vessel.</p>
+        </div>
+        <div>
+          <span>04 / DOCUMENTATION</span><strong>Open by design</strong>
+          <p>Dimensioned parts. Downloadable drawings.</p>
+        </div>
+      </section>
+    </main>
+    <footer class="page-footer">
+      <span>SOLAR WORKS <b>/</b> SD–01</span
+      ><span>Prototype engineering · Revision A · October 2026</span
+      ><a href="https://github.com/konard/solar-distilling-dryer/issues/1"
+        >Project brief ↗</a
+      >
+    </footer>
+    <noscript
+      ><p class="prose">
+        Enable JavaScript for the interactive model and generated fabrication
+        downloads. The
+        <a href="./docs/fabrication.md">fabrication guide</a> contains the
+        dimensions, cut list and cleaning procedure.
+      </p></noscript
+    >
+    <script src="./assets/vendor/three-r128.min.js"></script>
+    <script src="./assets/vendor/OrbitControls-r128.min.js"></script>
+    <script type="module" src="./assets/app.js"></script>
+  </body>
 </html>
