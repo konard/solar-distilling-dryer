@@ -111,6 +111,13 @@ describe('shared assembly geometry and public artifact', () => {
         drain.position[1] - drain.length / 2 + 15
     ).toBe(true);
   });
+  it('fits all eight cage locking pins through the specified M8 drillings', () => {
+    const pins = assembly().filter(
+      (s) => s.part === '08' && s.type === 'tube' && s.length === 40
+    );
+    expect(pins.length).toBe(8);
+    expect(pins.every((p) => p.outer === 8 && p.outer < 8.5)).toBe(true);
+  });
   it('exports developed panels with the actual sloping edge lengths', () => {
     const floors = cutList().filter((c) => c.name.startsWith('Floor'));
     expect(floors.length).toBe(4);

@@ -173,7 +173,7 @@ export const parts = [
     size: '300 × 300 shelf + 3 × 300 × 300 shields',
     group: 'cage',
     process:
-      'Shelf top Z430; removable 20 × 20 × 2 cage-only angle supports. Three detachable flat shields shade vessel from front and sides while leaving rear service access. Four M6 bolts per shield attach to cage; all penetrations outside chamber.',
+      'Shelf top Z430; 20 × 20 × 2 SHS bearers with removable cage-only brackets. Three detachable flat shields shade vessel from front and sides while leaving rear service access. Four M6 bolts per shield attach to cage; all penetrations outside chamber.',
   },
 ];
 

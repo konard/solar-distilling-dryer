@@ -236,6 +236,7 @@ function createScene(host) {
   const controls = new T.OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 700, 0);
   controls.enableDamping = true;
+  controls.autoRotateSpeed = 1;
   controls.minZoom = 0.45;
   controls.maxZoom = 5;
   controls.maxPolarAngle = Math.PI * 0.87;
@@ -440,6 +441,9 @@ export function createViewer(host, onSelect) {
     if (mode === 'dimensions') {
       showDimensions = value;
     }
+    if (mode === 'rotate') {
+      controls.autoRotate = value;
+    }
     if (mode === 'produce') {
       produce.visible = value;
     }
@@ -494,6 +498,7 @@ export function createViewer(host, onSelect) {
       section = false;
       setMode('dimensions', true);
       setMode('produce', true);
+      setMode('rotate', false);
       highlight.visible = false;
       view('iso');
     },

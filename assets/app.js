@@ -112,7 +112,13 @@ function configureViewer() {
       trace('view', button.dataset.view);
     })
   );
-  for (const mode of ['section', 'explode', 'dimensions', 'produce']) {
+  for (const mode of [
+    'section',
+    'explode',
+    'dimensions',
+    'produce',
+    'rotate',
+  ]) {
     $(`#${mode}`).addEventListener('change', (event) => {
       viewer?.setMode(mode, event.target.checked);
       $('#view-title').textContent = $('#explode').checked
@@ -129,6 +135,7 @@ function configureViewer() {
     $('#explode').checked = false;
     $('#dimensions').checked = true;
     $('#produce').checked = true;
+    $('#rotate').checked = false;
     $('#view-title').textContent = 'Assembly overview';
     document
       .querySelectorAll('[data-view]')

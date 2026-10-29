@@ -50,6 +50,7 @@ export async function verifyBlueprint(page, baseURL) {
       `${view} camera must change the rendered model`
     );
   }
+  await verifyAnimation(page, pixels);
   const canvas = await page.locator('canvas').boundingBox();
   const drag = async (button, dx, dy) => {
     const before = await pixels();
@@ -195,4 +196,13 @@ export async function verifyFallback(browser, baseURL) {
   } finally {
     await fallback.close();
   }
+}
+
+async function verifyAnimation(page, pixels) {
+  const before = await pixels();
+  await page.locator('#rotate').check();
+  await nextFrame(page);
+  check((await pixels()) !== before, 'Auto orbit must animate the model');
+  await page.locator('#rotate').uncheck();
+  await page.locator('#reset').click();
 }

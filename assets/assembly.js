@@ -108,7 +108,7 @@ function addExoskeleton({ add, box, tube }) {
       add('08', 'shs', { size: [25, 500, 25], position: [x, 270, z], wall: 2 });
       for (const y of [170, 195]) {
         add('08', 'tube', {
-          outer: 12,
+          outer: 8,
           inner: 0,
           length: 40,
           position: [x, y, z],

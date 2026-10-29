@@ -14,10 +14,12 @@ Objective: implement and verify every requirement of issue #1 and its comments i
 10. [ ] Fetch/merge latest default branch, review the whole diff, commit atomic steps and validate exact candidate revision. Only this coordinator pushes, once per batch, only to issue-1-5e79aea78387.
 11. [ ] Update PR title/body with requirement/evidence inventory, reproduction, assumptions and committed before/after screenshots. Preserve `Fixes #1`.
 12. [ ] List CI runs with timestamps and head SHAs; preserve every failed same-revision workflow log, inspect errors with line numbers and batch all fixes before another push. Wait for all required same-revision CI.
-13. [x] Review gh pr diff, confirm no requested behavior removed, clean working tree, default branch included, all checks passing; mark PR #2 ready. Never merge/release/deploy as part of this task.
+13. [ ] Review gh pr diff, confirm no requested behavior removed, clean working tree, default branch included, all checks passing; mark PR #2 ready. Never merge/release/deploy as part of this task.
 
-Evidence collected locally: baseline and final desktop/mobile screenshots; eleven native blueprint assertions; Chromium orbit/pan/zoom, camera views, geometry/BOM selection, section/explode/reset, keyboard tabs, five completed downloads, responsive widths and fallback without 3D; OpenSCAD full CSG plus manifold chamber/stand/drain/vessel STL. DXF profiles also import/extrude in OpenSCAD (its parser ignores standard TEXT labels).
+Evidence collected locally: baseline and final desktop/mobile screenshots; twelve native blueprint tests; Chromium orbit/pan/zoom, camera views, geometry/BOM selection, section/explode/reset, keyboard tabs, five completed downloads, responsive widths and fallback without 3D; OpenSCAD full CSG plus manifold chamber/stand/drain/vessel STL. DXF profiles also import/extrude in OpenSCAD (its parser ignores standard TEXT labels).
 
 Repository Pages API returned HTTP 404 on 2026-10-29. Public launch remains an external prerequisite: enable GitHub Actions as Pages source and authorize the separate merge/deployment. Keep this criterion unfinished until deployment evidence exists. Physical manufacturing/process commissioning is documented rather than claimed as performed.
 
 Local full-suite results: Node 925/925, Bun 925/925, Deno 924 passed and one existing runtime-specific ignored test. Lint/format/duplication, syntax, file limits, docs, workflow policy, actionlint and focused architecture gates pass. The Git comparison guards run after the commit so they inspect the candidate rather than unrelated existing changeset fragments.
+
+Final refinement: retained optional automatic orbit and added a reproducing regression for eight 8 mm pins fitting the specified Ø8.5 drillings. Focused native tests pass in Node, Bun and Deno; the preceding full-suite counts predate this additional regression.
